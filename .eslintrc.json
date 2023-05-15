@@ -26,6 +26,7 @@
     "simple-import-sort/exports": "warn",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/jsx-sort-props": [
       "warn",
       {

@@ -1,6 +1,6 @@
 .main {
   text-align: center;
-  color: #2c3e50;
+  color: var(--bs-body-color);
 }
 
 .main p {

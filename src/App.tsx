@@ -1,13 +1,14 @@
-import Logo from "@/assets/logo.png";
-import HelloWorld from "@/components/HelloWorld/HelloWorld";
+import { Navigate, Route, Routes } from "react-router-dom";
 
-import styles from "./App.module.css";
+import { DogInfo } from "./screens/DogInfo";
+import { MainList } from "./screens/MainList";
 
 export default function App() {
   return (
-    <main className={styles.main}>
-      <img className={styles.logo} alt="React logo" width="400px" src={Logo} />
-      <HelloWorld msg="Hello React + TypeScript + Vite" />
-    </main>
+    <Routes>
+      <Route path="/list" Component={MainList} />
+      <Route path="/list/:id" Component={DogInfo} />
+      <Route path="*" element={<Navigate replace to="/list" />} />
+    </Routes>
   );
 }
