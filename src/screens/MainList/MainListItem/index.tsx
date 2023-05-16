@@ -1,12 +1,12 @@
 import classnames from "classnames";
 import React from "react";
 
-import { IDogElement } from "@/api/dogs/types";
+import { IListElement } from "@/api/elements/types";
 
 import styles from "./styles.module.css";
 
 interface IMainListItemProps {
-  element: IDogElement;
+  element: IListElement;
 }
 
 export const MainListItem: React.FC<IMainListItemProps> = ({ element }) => {
@@ -17,7 +17,7 @@ export const MainListItem: React.FC<IMainListItemProps> = ({ element }) => {
       <div className={classnames(styles.container)}>
         <div className={styles.imageContainer}>
           <img
-            src={element.image.url}
+            src={element.image}
             alt="List element"
             className={classnames(styles.image)}
           />
@@ -25,9 +25,8 @@ export const MainListItem: React.FC<IMainListItemProps> = ({ element }) => {
         </div>
 
         <div className={styles.info}>
-          <span className={styles.name}>{element.id}</span>
           <span className={styles.name}>{element.name}</span>
-          <span className={styles.origin}>{element.life_span}</span>
+          <span className={styles.origin}>{element.species} {element.gender} <br /> Location: {element.location.name}</span>
         </div>
       </div>
     </div>

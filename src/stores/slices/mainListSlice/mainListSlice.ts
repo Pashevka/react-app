@@ -1,44 +1,67 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { fetchNextDogs } from "@/api/dogs/dogs";
-import { IDogElement } from "@/api/dogs/types";
+import { fetchNextElements } from "@/api/elements/elements";
+import { IListElement } from "@/api/elements/types";
+import { GENDER_FILTERS, STATUS_FILERS } from "./constants";
 
 export const mainListSlice = createSlice({
   name: "mainList",
   initialState: {
-    allDogs: [] as IDogElement[],
-    isAllDogsFetching: false,
+    allElements: [] as IListElement[],
+    isAllElementsFetching: false,
     hasErrors: false,
     fetchedPages: 0,
+    totalElements: 0,
     showingPage: 0,
+    selectedGenderFilter: GENDER_FILTERS.empty,
+    selectedStatusFilter: STATUS_FILERS.empty,
+    searchValue: '',
   },
   reducers: {
     setFetchedPage(state, action: PayloadAction<number>) {
       state.fetchedPages = action.payload;
     },
+    setAllElements(state, action: PayloadAction<IListElement[]>) {
+      state.allElements = action.payload;
+    },
     setShowingPage(state, action: PayloadAction<number>) {
-      const page = action.payload;
-      if (page === 0) {
-        return;
-      }
+     
       state.showingPage = action.payload;
+    },
+    setGenderFilter(state, action: PayloadAction<GENDER_FILTERS>) {
+      state.selectedGenderFilter = action.payload;
+      state.fetchedPages = 0
+      state.showingPage = 0
+      state.allElements = []
+    },
+    setStatusFilter(state, action: PayloadAction<STATUS_FILERS>) {
+      state.selectedStatusFilter = action.payload;
+      state.fetchedPages = 0
+      state.showingPage = 0
+      state.allElements = []
+    },
+
+    setSearchValue(state, action: PayloadAction<string>) {
+      state.searchValue = action.payload;
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchNextDogs.pending, state => {
-      state.isAllDogsFetching = true;
+    builder.addCase(fetchNextElements.pending, state => {
+      state.isAllElementsFetching = true;
       state.hasErrors = false;
     });
 
-    builder.addCase(fetchNextDogs.fulfilled, (state, { payload }) => {
-      state.allDogs.push(...payload);
-      state.isAllDogsFetching = false;
+    builder.addCase(fetchNextElements.fulfilled, (state, { payload }) => {
+      state.allElements.push(...payload.results);
+      state.isAllElementsFetching = false;
       state.fetchedPages += 1;
       state.showingPage += 1;
+      state.totalElements = payload.info.count
     });
 
-    builder.addCase(fetchNextDogs.rejected, state => {
+    builder.addCase(fetchNextElements.rejected, state => {
       state.hasErrors = true;
+      state.isAllElementsFetching = false
     });
   },
 });
