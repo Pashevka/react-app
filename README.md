@@ -1,5 +1,3 @@
-# Test task by Pavel Lavrentev pashevka@gmail.com for Senior Frontend Faraway (https://faraway.com/) 
-
 ## Getting started
 
 1. Download/clone project.
