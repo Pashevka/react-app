@@ -1,7 +1,0 @@
-.image {
-  width: 100;
-}
-
-.paginationItem:global(.disabled) {
-  opacity: 0.7;
-}

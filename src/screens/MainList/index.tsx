@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Pagination } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 
 import { fetchNextElements } from "@/api/elements/elements";
@@ -12,41 +12,27 @@ import { GENDER_FILTERS, STATUS_FILERS } from "@/stores/slices/mainListSlice/con
 import styles from "./styles.module.css";
 
 import debounce from 'lodash.debounce'
+import { MainListSelectFilters } from "./MainListSelectFilters";
+import { MainListSearchFilters } from "./MainListSearchFilters";
+import { MainListPagination } from "./MainListPagination";
 
 export const MainList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const showedElements = useSelector(selectShowedElements);
   const canDoNextPage = useSelector(selectCanDoNextPage);
 
-  const fetchedPages = useSelector<RootState, number>(
-    state => state.mainListReducer.fetchedPages
+  const {
+    fetchedPages,
+    showingPage,
+    selectedGenderFilter,
+    selectedStatusFilter,
+    searchValue,
+    isLoading
+  } = useSelector<RootState, RootState['mainListReducer']>(
+    state => state.mainListReducer
   );
 
-  const showingPage = useSelector<RootState, number>(
-    state => state.mainListReducer.showingPage
-  );
-
-  const gender = useSelector<RootState, GENDER_FILTERS>(
-    state => state.mainListReducer.selectedGenderFilter
-  );
-
-  const status = useSelector<RootState, STATUS_FILERS>(
-    state => state.mainListReducer.selectedStatusFilter
-  );
-
-  const search = useSelector<RootState, string>(
-    state => state.mainListReducer.searchValue
-  );
-
-  const isFetching = useSelector<RootState, boolean>(
-    state => state.mainListReducer.isAllElementsFetching
-  );
-  
   useEffect(() => {
-    // remove it
-    if (fetchedPages !== 0) {
-      return;
-    }
     dispatch(fetchNextElements({
       page: 1,
     }));
@@ -56,9 +42,9 @@ export const MainList: React.FC = () => {
     if (showingPage + value > fetchedPages * 2) {
       dispatch(fetchNextElements({
         page: fetchedPages + 1,
-        gender,
-        status,
-        searchString: search
+        gender: selectedGenderFilter,
+        status: selectedStatusFilter,
+        searchString: searchValue
       }));
     } else {
       dispatch(mainListSliceActions.setShowingPage(showingPage + value));
@@ -71,8 +57,8 @@ export const MainList: React.FC = () => {
     dispatch(fetchNextElements({
       page: 1,
       gender: genderFilter,
-      status: status,
-      searchString: search
+      status: selectedStatusFilter,
+      searchString: searchValue
     }));
 
   }
@@ -82,9 +68,9 @@ export const MainList: React.FC = () => {
     dispatch(mainListSliceActions.setStatusFilter(statusFilter));
     dispatch(fetchNextElements({
       page: 1,
-      gender: gender,
+      gender: selectedGenderFilter,
       status: statusFilter,
-      searchString: search
+      searchString: searchValue
     }));
 
   }
@@ -96,78 +82,47 @@ export const MainList: React.FC = () => {
     dispatch(mainListSliceActions.setAllElements([]));
     dispatch(fetchNextElements({
       page: 1,
-      gender: gender,
-      status: status,
+      gender: selectedGenderFilter,
+      status: selectedStatusFilter,
       searchString: searchValue
     }));
   }
   const debouncedSendSearchRequest = debounce(sendSearchRequest, 500)
 
-  const onInputChange = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     debouncedSendSearchRequest(e.target.value)
   }
 
-  const shouldShowNoElementsText = !isFetching && !showedElements.length
+  const shouldShowNoElementsText = !isLoading && !showedElements.length
   return (
-    <div className="container w-100 h-100 p-2 justify-content-center d-flex flex-column">
-      <div className="row">
-        <div className="col flex-grow-0">
-          <h1 className="text-secondary text-nowrap">Si1L-still v0.1</h1>
-        </div>
-        <div className="col">
-          <div className="h-100 flex-1">
-            <div className="row align-items-center justify-content-center h-100">
-              <div className="col-6">
-                <Form.Select defaultValue={STATUS_FILERS.empty} aria-label="Default select example" onChange={onStatusSelectChange}>
-                  <option value={STATUS_FILERS.empty}>Status</option>
-                  <option value={STATUS_FILERS.alive}>Alive</option>
-                  <option value={STATUS_FILERS.dead}>Dead</option>
-                  <option value={STATUS_FILERS.unknown}>Unknown</option>
-                </Form.Select>
-              </div>
-              <div className="col-6">
-                <Form.Select defaultValue={GENDER_FILTERS.empty} aria-label="Default select example" onChange={onGenderSelectChange}>
-                  <option value={GENDER_FILTERS.empty}>Gender</option>
-                  <option value={GENDER_FILTERS.female}>Female</option>
-                  <option value={GENDER_FILTERS.male}>Male</option>
-                  <option value={GENDER_FILTERS.genderless}>Genderless</option>
-                  <option value={GENDER_FILTERS.unknown}>Unknown</option>
-                </Form.Select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="row ">
-        <div className="col-12">
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Character Name</Form.Label>
-            <Form.Control onChange={onInputChange} type="text" placeholder="Enter name" />
-          </Form.Group>
-        </div>
-      </div>
-      <div className="row">
+    <Container className="w-100 h-100 p-2 justify-content-center d-flex flex-column">
+      <Row>
+        <Col xs={12} sm={4}>
+          <h1 className="text-secondary text-center">Si1L-still v0.1</h1>
+        </Col>
+        <Col>
+          <MainListSelectFilters onStatusSelectChange={onStatusSelectChange} onGenderSelectChange={onGenderSelectChange} />
+        </Col>
+      </Row>
+
+      <Row className="my-3">
+        <Col>
+          <MainListSearchFilters onInputChange={onInputChange} />
+        </Col>
+        <Col className="col-auto">
+          <MainListPagination canDoNextPage={canDoNextPage} onPaginationClick={onPaginationClick} showingPage={showingPage} />
+        </Col>
+      </Row>
+
+      <Row>
         {showedElements.map(dog => {
           return <MainListItem key={dog.id} element={dog} />;
         })}
         {shouldShowNoElementsText && (
           <h2 className='text-danger text-center p-5'>No characters found</h2>
         )}
-      </div>
-      <div className="row">
-        <div className="col-12 w-100 d-flex justify-content-center align-items-center mt-2">
-          <span className="text-info p-2">Page: {showingPage}</span>
-          <Pagination>
-            <Pagination.Prev
-              className={styles.paginationItem}
-              disabled={showingPage === 1}
-              onClick={() => onPaginationClick(-1)}
-            />
-            <Pagination.Next className={styles.paginationItem} disabled={!canDoNextPage} onClick={() => onPaginationClick(1)} />
-          </Pagination>
-        </div>
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 

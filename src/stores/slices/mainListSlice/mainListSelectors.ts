@@ -4,7 +4,6 @@ import { RootState } from "@/stores";
 
 export const selectShowedElements = (state: RootState): IListElement[] => {
   const page = state.mainListReducer.showingPage - 1;
-  console.log("🚀 ~ file: mainListSelectors.ts:7 ~ selectShowedElements ~ page:", page)
   return state.mainListReducer.allElements.slice(
     page * ELEMENTS_PER_PAGE,
     page * ELEMENTS_PER_PAGE + ELEMENTS_PER_PAGE

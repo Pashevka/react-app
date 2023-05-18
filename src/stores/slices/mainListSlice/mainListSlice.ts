@@ -8,7 +8,7 @@ export const mainListSlice = createSlice({
   name: "mainList",
   initialState: {
     allElements: [] as IListElement[],
-    isAllElementsFetching: false,
+    isLoading: false,
     hasErrors: false,
     fetchedPages: 0,
     totalElements: 0,
@@ -25,7 +25,6 @@ export const mainListSlice = createSlice({
       state.allElements = action.payload;
     },
     setShowingPage(state, action: PayloadAction<number>) {
-     
       state.showingPage = action.payload;
     },
     setGenderFilter(state, action: PayloadAction<GENDER_FILTERS>) {
@@ -47,13 +46,13 @@ export const mainListSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(fetchNextElements.pending, state => {
-      state.isAllElementsFetching = true;
+      state.isLoading = true;
       state.hasErrors = false;
     });
 
     builder.addCase(fetchNextElements.fulfilled, (state, { payload }) => {
       state.allElements.push(...payload.results);
-      state.isAllElementsFetching = false;
+      state.isLoading = false;
       state.fetchedPages += 1;
       state.showingPage += 1;
       state.totalElements = payload.info.count
@@ -61,7 +60,7 @@ export const mainListSlice = createSlice({
 
     builder.addCase(fetchNextElements.rejected, state => {
       state.hasErrors = true;
-      state.isAllElementsFetching = false
+      state.isLoading = false
     });
   },
 });

@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "@/stores";
 
 import { GENDER_FILTERS, STATUS_FILERS } from "@/stores/slices/mainListSlice/constants";
-import { IFetchNextElementsRT } from "./types";
+import { IFetchNextElementsRT, IListElement } from "./types";
 
 export const fetchNextElements = createAsyncThunk<
   IFetchNextElementsRT,
@@ -40,9 +40,9 @@ export const fetchNextElements = createAsyncThunk<
     }
   );
 
-  // Check if status is not okay:
+  await sleep(500)
+
   if (response.status !== 200) {
-    // Return the error message:
     return thunkApi.rejectWithValue({
       message: "Failed to fetch elements.",
     });
@@ -51,3 +51,36 @@ export const fetchNextElements = createAsyncThunk<
   const json = await response.json() as IFetchNextElementsRT;
   return json
 });
+
+
+export const fetchCharacter = createAsyncThunk<
+  IListElement,
+  number | string,
+  { state: RootState }
+>("elements/fetchCharacter", async (id, thunkApi) => {
+  const response = await fetch(
+    `https://rickandmortyapi.com/api/character/${id}`,
+
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  await sleep(1000)
+  
+  if (response.status !== 200) {
+    return thunkApi.rejectWithValue({
+      message: "Failed to fetch elements.",
+    });
+  }
+
+  const json = await response.json() as IListElement;
+  return json
+});
+
+const sleep = (time: number) => {
+  return new Promise(resolve => setTimeout(resolve, 0));
+}

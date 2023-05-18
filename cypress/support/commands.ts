@@ -36,4 +36,15 @@
 //   }
 // }
 
-export {};
+Cypress.Commands.add('getByTestId', (key): Cypress.Chainable => {
+    return cy.get(`[data-testid='${key}']`)
+})
+
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            getByTestId(testId: string): Chainable<Element>
+        }
+    }
+}
+export { };

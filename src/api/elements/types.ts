@@ -5,18 +5,16 @@ export interface IListElement {
   species: string;
   type: string;
   gender: string;
-  origin: {
-    name: string;
-    url: string;
-  };
-  location: {
-    name: string;
-    url: string;
-  };
+  origin: IListElementUrlField;
+  location: IListElementUrlField;
   image: string;
   episode: string[];
   url: string;
   created: string;
+}
+export interface IListElementUrlField {
+  name: string;
+  url: string;
 }
 export interface IRequestInfo {
   "count": number,
