@@ -1,37 +1,17 @@
-# React TypeScript template with Vite
-
-This is a [React](https://reactjs.org) + [TypeScript](https://www.typescriptlang.org/) boilerplate built with [Vite](https://vitejs.dev).
-
-## What's inside?
-
-- [ReactJS](https://reactjs.org)
-- [Vite](https://vitejs.dev)
-- [TypeScript](https://www.typescriptlang.org)
-- [Jest](https://jestjs.io)
-- [Testing Library](https://testing-library.com)
-- [Cypress](https://www.cypress.io)
-- [ESLint](https://eslint.org)
-- [Prettier](https://prettier.io)
-- [Polyfills](https://github.com/vitejs/vite/tree/main/packages/plugin-legacy#readme)
+# Test task by Pavel Lavrentev pashevka@gmail.com for Senior Frontend Faraway (https://faraway.com/) 
 
 ## Getting started
 
-1. Create the project.
+1. Download/clone project.
 
    ```bash
-   npx degit fabien-ml/react-ts-vite-template my-app
+   git clone https://github.com/Pashevka/react-app.git
    ```
 
 2. Access the project directory.
 
    ```bash
-   cd my-app
-   ```
-
-3. Initialize a git repository.
-
-   ```bash
-   git init
+   cd react-app
    ```
 
 4. Install dependencies.
@@ -85,6 +65,14 @@ npm run serve
   npm run test:e2e
   ```
 
-## License
+## Comments
+This application consists of three pages: a list of items, a single item page, and a 404 page.
 
-This project is licensed under the MIT License.
+On the list of items page, 10 cards are displayed. The API that I found returns batches of 20 items from the server, so I simulated pages of 10 items each. Additionally, there are two select dropdowns on this page for filtering by gender and status, as well as a text search field.
+
+On the single item page, the main information about the character is displayed. The data can be edited locally. If an invalid ID is entered, the user will be redirected to the 404 page.
+
+The application includes several unit and end-to-end tests. I understand that in a real application, there would be more tests. The application uses both CSS modules and regular CSS for styling. In hindsight, I realize that I should have also used Sass to demonstrate its usage.
+
+### Additional Note
+I also wanted to add Sonar for checking the application, but I realized that it's better not to share personal keys for this purpose.
