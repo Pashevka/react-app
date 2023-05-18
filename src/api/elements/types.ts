@@ -17,13 +17,13 @@ export interface IListElementUrlField {
   url: string;
 }
 export interface IRequestInfo {
-  "count": number,
-  "pages": number,
-  "next": string,
-  "prev": string,
+  count: number;
+  pages: number;
+  next: string;
+  prev: string;
 }
 
 export interface IFetchNextElementsRT {
-  info: IRequestInfo
-  results: IListElement[]
+  info: IRequestInfo;
+  results: IListElement[];
 }

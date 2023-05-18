@@ -6,7 +6,7 @@ import { singleElementSlice } from "./slices/singleElementSlice/singleElementSli
 export const store = configureStore({
   reducer: {
     mainListReducer: mainListSlice.reducer,
-    singleElementReducer: singleElementSlice.reducer
+    singleElementReducer: singleElementSlice.reducer,
   },
 });
 

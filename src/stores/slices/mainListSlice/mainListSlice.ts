@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { fetchNextElements } from "@/api/elements/elements";
 import { IListElement } from "@/api/elements/types";
+
 import { GENDER_FILTERS, STATUS_FILERS } from "./constants";
 
 export const mainListSlice = createSlice({
@@ -15,7 +16,7 @@ export const mainListSlice = createSlice({
     showingPage: 0,
     selectedGenderFilter: GENDER_FILTERS.empty,
     selectedStatusFilter: STATUS_FILERS.empty,
-    searchValue: '',
+    searchValue: "",
   },
   reducers: {
     setFetchedPage(state, action: PayloadAction<number>) {
@@ -29,15 +30,15 @@ export const mainListSlice = createSlice({
     },
     setGenderFilter(state, action: PayloadAction<GENDER_FILTERS>) {
       state.selectedGenderFilter = action.payload;
-      state.fetchedPages = 0
-      state.showingPage = 0
-      state.allElements = []
+      state.fetchedPages = 0;
+      state.showingPage = 0;
+      state.allElements = [];
     },
     setStatusFilter(state, action: PayloadAction<STATUS_FILERS>) {
       state.selectedStatusFilter = action.payload;
-      state.fetchedPages = 0
-      state.showingPage = 0
-      state.allElements = []
+      state.fetchedPages = 0;
+      state.showingPage = 0;
+      state.allElements = [];
     },
 
     setSearchValue(state, action: PayloadAction<string>) {
@@ -55,12 +56,12 @@ export const mainListSlice = createSlice({
       state.isLoading = false;
       state.fetchedPages += 1;
       state.showingPage += 1;
-      state.totalElements = payload.info.count
+      state.totalElements = payload.info.count;
     });
 
     builder.addCase(fetchNextElements.rejected, state => {
       state.hasErrors = true;
-      state.isLoading = false
+      state.isLoading = false;
     });
   },
 });

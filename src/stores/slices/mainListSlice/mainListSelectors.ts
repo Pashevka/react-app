@@ -11,7 +11,9 @@ export const selectShowedElements = (state: RootState): IListElement[] => {
 };
 
 export const selectCanDoNextPage = (state: RootState): boolean => {
-  const { allElements, totalElements, showingPage, fetchedPages } = state.mainListReducer
-  return allElements.length < totalElements || showingPage < fetchedPages * 2 - 1
-
-}
+  const { allElements, totalElements, showingPage, fetchedPages } =
+    state.mainListReducer;
+  return (
+    allElements.length < totalElements || showingPage < fetchedPages * 2 - 1
+  );
+};

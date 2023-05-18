@@ -7,8 +7,8 @@ import { IKeyValue } from "@/constants/types";
 const initialState = {
   element: null as IListElement | null,
   isLoading: false,
-  hasErrors: false
-}
+  hasErrors: false,
+};
 
 export const singleElementSlice = createSlice({
   name: "singleElement",
@@ -18,46 +18,47 @@ export const singleElementSlice = createSlice({
       state.element = action.payload;
     },
     clear() {
-      return { ...initialState }
+      return { ...initialState };
     },
     setNewData(state, action: PayloadAction<IKeyValue<keyof IListElement>>) {
       if (state.element === null) {
-        return
+        return;
       }
-      const target = state.element[action.payload.key]
-      const isChangingPrimitiveField = ['string', 'number'].includes(typeof target)
+      const target = state.element[action.payload.key];
+      const isChangingPrimitiveField = ["string", "number"].includes(
+        typeof target
+      );
 
       if (isChangingPrimitiveField) {
         state.element = {
           ...state.element,
-          [action.payload.key]: action.payload.value
+          [action.payload.key]: action.payload.value,
         };
-        return
+        return;
       }
 
       state.element = {
         ...state.element,
         [action.payload.key]: {
-          ...target as IListElementUrlField,
-          name: action.payload.value
-        }
+          ...(target as IListElementUrlField),
+          name: action.payload.value,
+        },
       };
-
     },
   },
   extraReducers: builder => {
     builder.addCase(fetchCharacter.pending, state => {
-      state.isLoading = true
+      state.isLoading = true;
     });
 
     builder.addCase(fetchCharacter.fulfilled, (state, { payload }) => {
-      state.element = payload
-      state.isLoading = false
+      state.element = payload;
+      state.isLoading = false;
     });
 
     builder.addCase(fetchCharacter.rejected, state => {
-      state.isLoading = false
-      state.hasErrors = true
+      state.isLoading = false;
+      state.hasErrors = true;
     });
   },
 });

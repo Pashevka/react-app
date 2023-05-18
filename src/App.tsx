@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
-import { SingleElementInfo } from "./screens/SingleElementInfo";
-import { MainList } from "./screens/MainList";
 import AppLoader from "./components/AppLoader";
+import { MainList } from "./screens/MainList";
 import NotFound from "./screens/NotFound";
+import { SingleElementInfo } from "./screens/SingleElementInfo";
 
 export default function App() {
   return (

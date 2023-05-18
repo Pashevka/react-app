@@ -36,15 +36,16 @@
 //   }
 // }
 
-Cypress.Commands.add('getByTestId', (key): Cypress.Chainable => {
-    return cy.get(`[data-testid='${key}']`)
-})
+Cypress.Commands.add("getByTestId", (key): Cypress.Chainable => {
+  return cy.get(`[data-testid='${key}']`);
+});
 
 declare global {
+  // eslint-disable-next-line
     namespace Cypress {
-        interface Chainable {
-            getByTestId(testId: string): Chainable<Element>
-        }
+    interface Chainable {
+      getByTestId(testId: string): Chainable<Element>;
     }
+  }
 }
-export { };
+export {};
